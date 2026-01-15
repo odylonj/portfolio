@@ -1,0 +1,292 @@
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family: system-ui, Arial, sans-serif;
+  background:#0b0f16;
+  color:#e8eefc;
+}
+
+.topbar{
+  position: sticky;
+  top: 0;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap:16px;
+  padding:12px 16px;
+  background: rgba(10,14,22,.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  z-index: 10;
+}
+.brand{ font-weight:700; letter-spacing:.2px; }
+
+.stage{
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+
+.room{
+  position: relative;
+  width: min(1100px, 95vw);
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  background: url("./asset/image/room.png") center / cover no-repeat;
+}
+
+.hotspot{
+  position:absolute;
+  background: rgba(255,255,255,0.01);
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.00);
+}
+
+/* DEBUG si tu veux voir les zones */
+/* .hotspot{ outline:2px dashed cyan; } */
+
+.hs-pc{ left: 38%; top: 48%; width: 24%; height: 22%; }
+.hs-table{ left: 65%; top: 45%; width: 30%; height: 35%; }
+.hs-board{ left: 6%; top: 30%; width: 24%; height: 30%; }
+
+.overlay{
+  position:absolute;
+  inset:0;
+  display:none;
+  place-items:center;
+  background: rgba(0,0,0,.55);
+}
+.overlay.show{ display:grid; }
+
+.window{
+  width: min(760px, 92%);
+  border-radius: 18px;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(15,20,30,.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 25px 80px rgba(0,0,0,.55);
+}
+
+.window-top{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.window-title{ font-weight:700; }
+
+.window-close{
+  border:0;
+  background: rgba(255,255,255,.10);
+  color:#fff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor:pointer;
+}
+.window-close:hover{ background: rgba(255,255,255,.18); }
+
+.desktop{
+  padding: 18px;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(90px, 1fr));
+  gap: 14px;
+}
+
+.icon{
+  display:grid;
+  place-items:center;
+  gap: 6px;
+  text-decoration:none;
+  color:#e8eefc;
+  padding: 14px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.05);
+}
+.icon:hover{
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255,255,255,.18);
+}
+.icon span{ font-size: 13px; opacity: .9; }
+
+.panel-grid{
+  padding: 16px 18px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+.tile{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.05);
+  color: #e8eefc;
+  border-radius: 14px;
+  padding: 14px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.tile:hover{
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255,255,255,.18);
+}
+.tile span{ font-weight:700; margin-left:6px; }
+.tile small{ display:block; opacity:.8; margin-top:6px; }
+
+.panel-content{
+  padding: 16px 18px;
+  min-height: 220px;
+}
+.panel-content a{ color:#e8eefc; }
+/* ---- HOTSPOTS: visibilité + hover ---- */
+.hotspot{
+  position:absolute;
+  background: rgba(255,255,255,0.02); /* léger voile */
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.00);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+}
+
+/* effet hover */
+.hotspot:hover{
+  background: rgba(120,200,255,.10);
+  border-color: rgba(120,200,255,.35);
+  box-shadow:
+    0 0 0 3px rgba(120,200,255,.12),
+    0 14px 30px rgba(0,0,0,.35);
+  transform: translateY(-2px);
+}
+
+/* focus clavier (accessibilité) */
+.hotspot:focus-visible{
+  outline: none;
+  background: rgba(120,200,255,.12);
+  border-color: rgba(120,200,255,.55);
+  box-shadow: 0 0 0 4px rgba(120,200,255,.18);
+}
+
+/* petite “vibration” subtile pour dire “cliquable” (optionnel) */
+@keyframes hotspotPulse{
+  0%,100% { box-shadow: 0 0 0 0 rgba(120,200,255,.10); }
+  50%     { box-shadow: 0 0 0 6px rgba(120,200,255,.06); }
+}
+.room:hover .hotspot{
+  animation: hotspotPulse 2.2s ease-in-out infinite;
+}
+.room:hover .hotspot:hover{
+  animation: none;
+}
+/* tooltip (utilise aria-label) */
+.hotspot::after{
+  content: attr(aria-label);
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+
+  background: rgba(15,20,30,.92);
+  border: 1px solid rgba(255,255,255,.12);
+  color: #e8eefc;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+.hotspot:hover::after{
+  opacity: 1;
+  transform: translate(-50%, -115%);
+}
+/* ====== OVERLAY DESKTOP -> MODE "BUREAU WINDOWS" ====== */
+#desktopOverlay .window{
+  width: min(1100px, 95vw);
+  height: min(640px, 85vh);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 25px 80px rgba(0,0,0,.60);
+  background: url("./asset/image/bureau.jpg") center / cover no-repeat;
+}
+
+/* barre du haut façon fenêtre */
+#desktopOverlay .window-top{
+  background: rgba(10,14,22,.55);
+  backdrop-filter: blur(10px);
+}
+
+/* zone bureau */
+.desktop{
+  position: absolute;
+  inset: 48px 0 0 0;     /* laisse la place à window-top */
+  padding: 18px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(90px, 1fr));
+  grid-auto-rows: 96px;
+  gap: 14px;
+  align-content: start;
+}
+
+/* icônes "raccourcis" */
+.icon{
+  width: 90px;
+  justify-self: start;
+  align-self: start;
+
+  display: grid;
+  place-items: center;
+  gap: 6px;
+
+  text-decoration: none;
+  color: #e8eefc;
+
+  padding: 10px 8px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.00);
+  background: rgba(0,0,0,.00);
+
+  user-select: none;
+  transition: background .15s ease, border-color .15s ease, transform .12s ease;
+}
+
+.icon:hover{
+  background: rgba(0,0,0,.28);
+  border-color: rgba(255,255,255,.18);
+  transform: translateY(-1px);
+}
+
+.icon:active{
+  transform: translateY(0px) scale(.99);
+}
+
+.icon span{
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0,0,0,.55);
+}
+
+/* emoji un peu plus gros */
+.icon .emoji{
+  font-size: 26px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.55));
+}
+
+/* responsive */
+@media (max-width: 860px){
+  .desktop{ grid-template-columns: repeat(3, minmax(90px, 1fr)); }
+}

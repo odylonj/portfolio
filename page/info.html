@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Infos — Auto-évaluation</title>
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    .pagewrap{width:min(1100px,95vw);padding:24px;border-radius:18px;border:1px solid rgba(255,255,255,.10);background: rgba(15,20,30,.92);}
+    .meta{opacity:.85;font-size:14px;}
+    .legend{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 18px;}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background: rgba(255,255,255,.06);font-size:13px;opacity:.95;}
+    details.comp{border:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.04);border-radius:16px;margin:14px 0;overflow:hidden;}
+    details.comp > summary{cursor:pointer;padding:14px 16px;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none;}
+    details.comp > summary::-webkit-details-marker{display:none;}
+    .comp-title{font-weight:800;letter-spacing:.2px;}
+    .comp-sub{opacity:.8;font-size:13px;}
+    .acwrap{padding:0 16px 16px;}
+    .ac{border:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.03);border-radius:14px;padding:12px;margin-top:12px;}
+    .achead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .acname{font-weight:700;line-height:1.25;}
+    .accode{opacity:.8;font-size:12px;margin-top:4px;}
+    .rating{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .rating label{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.04);cursor:pointer;font-size:13px;opacity:.95;}
+    textarea.justif{margin-top:10px;width:100%;min-height:92px;resize:vertical;border-radius:12px;border:1px solid rgba(255,255,255,.12);background: rgba(0,0,0,.25);color:#e8eefc;padding:10px;font:inherit;outline:none;}
+    textarea.justif:focus{border-color: rgba(255,255,255,.22);background: rgba(0,0,0,.32);}
+    .tools{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .btn{border:1px solid rgba(255,255,255,.12);background: rgba(255,255,255,.06);color:#e8eefc;border-radius:12px;padding:10px 12px;cursor:pointer;font-weight:600;}
+    .btn:hover{background: rgba(255,255,255,.10);}
+    .btn.danger{border-color: rgba(255,80,80,.30);}
+    .btn.danger:hover{background: rgba(255,80,80,.12);}
+    .small{opacity:.8;font-size:12px;margin-top:10px;}
+
+    /* topbar actions */
+    .top-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .toplink{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:#e8eefc;
+      border-radius:12px;
+      padding:8px 10px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .toplink:hover{ background: rgba(255,255,255,.10); }
+
+    /* modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      place-items:center;
+      background: rgba(0,0,0,.55);
+      z-index: 50;
+    }
+    .modal.show{ display:grid; }
+    .modal-card{
+      width:min(560px, 92vw);
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(15,20,30,.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 25px 80px rgba(0,0,0,.55);
+    }
+    .modal-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .modal-title{ font-weight:800; }
+    .modal-close{
+      border:0;
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      border-radius: 10px;
+      padding: 6px 10px;
+      cursor:pointer;
+    }
+    .modal-close:hover{ background: rgba(255,255,255,.18); }
+    .modal-body{ padding: 14px 16px; }
+    .kv{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .kv:last-child{ border-bottom:none; }
+    .k{ opacity:.75; font-size:13px; }
+    .v a{ color:#e8eefc; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a href="../index.html" style="color:inherit;text-decoration:none;">← Retour</a>
+    </div>
+
+    <div class="top-actions">
+      <a class="toplink" href="../asset/cv/cv.pdf" target="_blank" rel="noopener">📄 CV</a>
+
+      <button class="toplink" id="openContact" type="button">✉️ Contact</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section class="pagewrap">
+      <h1>Infos — Auto-évaluation (BUT Info A2)</h1>
+      <p class="meta">Auto-évaluation “honnête mais constructive”. Objectif : se situer + savoir quoi améliorer.</p>
+
+      <div class="legend">
+        <span class="pill">⚪ Non acquis</span>
+        <span class="pill">🔵 En cours</span>
+        <span class="pill">🟢 Acquis</span>
+        <span class="pill">📝 “Pourquoi” = preuve / exemple</span>
+      </div>
+
+      <!-- C1 -->
+      <details class="comp" open>
+        <summary>
+          <div>
+            <div class="comp-title">Compétence 1 — Réaliser un développement d’application</div>
+            <div class="comp-sub">A2 (Parcours A)</div>
+          </div>
+          <div class="comp-sub">cliquer pour ouvrir/fermer</div>
+        </summary>
+
+        <div class="acwrap" data-comp="C1">
+          <div class="ac" data-ac="AC1">
+            <div class="achead">
+              <div>
+                <div class="acname">Élaborer et implémenter les spécifications fonctionnelles et non fonctionnelles à partir des exigences</div>
+                <div class="accode">C1.A2 — AC1</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C1-AC1" value="na">⚪</label>
+                <label><input type="radio" name="C1-AC1" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C1-AC1" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je suis généralement capable de réaliser un développement en suivant des spécifications fonctionnelles et non fonctionnelles fournies. J’ai acquis ça via des projets académiques/perso : analyse des besoins, conception, implémentation. Exemple : EcoGestUM (interpréter les besoins utilisateurs, interface utilisable, contraintes techniques).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC2">
+            <div class="achead">
+              <div>
+                <div class="acname">Appliquer des principes d’accessibilité et d’ergonomie</div>
+                <div class="accode">C1.A2 — AC2</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C1-AC2" value="na">⚪</label>
+                <label><input type="radio" name="C1-AC2" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C1-AC2" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je fais en sorte de rendre mes interfaces le plus ergonomiques possible selon mon niveau et le temps. J’ai appliqué des principes d’UI/UX sur Timeline (interface plus intuitive), mais je dois progresser sur l’accessibilité (contrastes, clavier, labels, etc.).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC3">
+            <div class="achead">
+              <div>
+                <div class="acname">Adopter de bonnes pratiques de conception et de programmation</div>
+                <div class="accode">C1.A2 — AC3</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C1-AC3" value="na">⚪</label>
+                <label><input type="radio" name="C1-AC3" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C1-AC3" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">J’essaie (avec difficulté) d’adopter de bonnes pratiques : code plus lisible, mieux structuré, modularité. Exemple : Morpion JavaFX (structuration pour faciliter maintenance et modifications). Je progresse mais ce n’est pas encore automatique.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC4">
+            <div class="achead">
+              <div>
+                <div class="acname">Vérifier et valider la qualité de l’application par les tests</div>
+                <div class="accode">C1.A2 — AC4</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C1-AC4" value="na">⚪</label>
+                <label><input type="radio" name="C1-AC4" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C1-AC4" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">J’ai du mal à mettre en place des tests “propres” et complets. Je comprends l’intérêt (régression, fiabilité), et j’ai commencé sur quelques fonctions clés (ex : EcoGestUM, tests unitaires basiques / vérifs manuelles). Je dois progresser (JUnit, cas limites, automatisation).</textarea>
+          </div>
+        </div>
+      </details>
+
+      <!-- C2 -->
+      <details class="comp">
+        <summary>
+          <div>
+            <div class="comp-title">Compétence 2 — Optimiser des applications</div>
+            <div class="comp-sub">A2 (Parcours A)</div>
+          </div>
+          <div class="comp-sub">cliquer pour ouvrir/fermer</div>
+        </summary>
+
+        <div class="acwrap" data-comp="C2">
+          <div class="ac" data-ac="AC1">
+            <div class="achead">
+              <div>
+                <div class="acname">Choisir des structures de données complexes adaptées au problème</div>
+                <div class="accode">C2.A2 — AC1</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C2-AC1" value="na">⚪</label>
+                <label><input type="radio" name="C2-AC1" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C2-AC1" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">On a vu plusieurs structures, mais je ne maîtrise pas encore “le bon choix selon le cas”. J’ai utilisé listes/collections dans Timeline, mais j’ai besoin d’être plus à l’aise (complexité, trade-offs, cas d’utilisation).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC2">
+            <div class="achead">
+              <div>
+                <div class="acname">Utiliser des techniques algorithmiques adaptées pour des problèmes complexes</div>
+                <div class="accode">C2.A2 — AC2</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C2-AC2" value="na">⚪</label>
+                <label><input type="radio" name="C2-AC2" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C2-AC2" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">J’essaie d’appliquer des techniques algorithmiques, mais je suis encore en apprentissage. Sur Morpion, j’ai exploré différentes stratégies/optimisations, mais je manque encore de recul sur les méthodes “avancées” et leurs contextes.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC3">
+            <div class="achead">
+              <div>
+                <div class="acname">Comprendre les enjeux et moyens de sécurisation des données et du code</div>
+                <div class="accode">C2.A2 — AC3</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C2-AC3" value="na">⚪</label>
+                <label><input type="radio" name="C2-AC3" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C2-AC3" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je comprends mieux les enjeux, mais je n’applique pas encore tout correctement. Sur EcoGestUM (web), j’ai essayé d’éviter des erreurs classiques (validation, attention aux entrées), mais je dois encore progresser (auth, droits, injections, bonnes pratiques).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC4">
+            <div class="achead">
+              <div>
+                <div class="acname">Évaluer l’impact environnemental et sociétal des solutions proposées</div>
+                <div class="accode">C2.A2 — AC4</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C2-AC4" value="na">⚪</label>
+                <label><input type="radio" name="C2-AC4" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C2-AC4" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Vu sur plusieurs projets l’impact environnemental/sociétal. Exemple : EcoGestUM (gestion déchets + sensibilisation). Je sais l’expliquer, mais je dois mieux le formaliser (indicateurs, choix techniques, sobriété numérique).</textarea>
+          </div>
+        </div>
+      </details>
+
+      <!-- C3 -->
+      <details class="comp">
+        <summary>
+          <div>
+            <div class="comp-title">Compétence 3 — Administrer des systèmes informatiques communicants complexes</div>
+            <div class="comp-sub">A2 (Parcours A)</div>
+          </div>
+          <div class="comp-sub">cliquer pour ouvrir/fermer</div>
+        </summary>
+
+        <div class="acwrap" data-comp="C3">
+          <div class="ac" data-ac="AC1">
+            <div class="achead">
+              <div>
+                <div class="acname">Concevoir et développer des applications communicantes</div>
+                <div class="accode">C3.A2 — AC1</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C3-AC1" value="na">⚪</label>
+                <label><input type="radio" name="C3-AC1" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C3-AC1" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">À l’aise sur la partie dev “classique”, mais la partie réseau/communication est encore en progression. Je sais utiliser des échanges simples (API / requêtes / client-serveur) mais je dois consolider (protocoles, erreurs, performance).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC2">
+            <div class="achead">
+              <div>
+                <div class="acname">Utiliser des serveurs et des services réseaux virtualisés</div>
+                <div class="accode">C3.A2 — AC2</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C3-AC2" value="na">⚪</label>
+                <label><input type="radio" name="C3-AC2" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C3-AC2" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">J’ai vu la virtualisation/serveurs en cours/TP. Je sais suivre un guide et déployer une config simple, mais je ne suis pas encore autonome sur diagnostic réseau / services avancés.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC3">
+            <div class="achead">
+              <div>
+                <div class="acname">Sécuriser les services et données d’un système</div>
+                <div class="accode">C3.A2 — AC3</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C3-AC3" value="na">⚪</label>
+                <label><input type="radio" name="C3-AC3" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C3-AC3" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je connais les principes (comptes, droits, firewall, mises à jour, sauvegardes), mais l’application pratique reste fragile : je dois être plus rigoureux et plus régulier sur les checks sécurité.</textarea>
+          </div>
+        </div>
+      </details>
+
+      <!-- C4 -->
+      <details class="comp">
+        <summary>
+          <div>
+            <div class="comp-title">Compétence 4 — Gérer des données de l’information</div>
+            <div class="comp-sub">A2 (Parcours A)</div>
+          </div>
+          <div class="comp-sub">cliquer pour ouvrir/fermer</div>
+        </summary>
+
+        <div class="acwrap" data-comp="C4">
+          <div class="ac" data-ac="AC1">
+            <div class="achead">
+              <div>
+                <div class="acname">Optimiser les modèles de données de l’entreprise</div>
+                <div class="accode">C4.A2 — AC1</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C4-AC1" value="na">⚪</label>
+                <label><input type="radio" name="C4-AC1" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C4-AC1" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je sais concevoir un MCD/MLD et faire une BDD relationnelle cohérente, mais l’optimisation (normalisation fine, perfs, index) est encore en progrès.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC2">
+            <div class="achead">
+              <div>
+                <div class="acname">Assurer la confidentialité des données (intégrité et sécurité)</div>
+                <div class="accode">C4.A2 — AC2</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C4-AC2" value="na">⚪</label>
+                <label><input type="radio" name="C4-AC2" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C4-AC2" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je connais les contraintes (clés, droits, validations), et je fais attention aux accès. Je dois encore améliorer la sécurité globale (rôles, principe de moindre privilège, gestion des erreurs).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC3">
+            <div class="achead">
+              <div>
+                <div class="acname">Organiser la restitution de données à travers la programmation et la visualisation</div>
+                <div class="accode">C4.A2 — AC3</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C4-AC3" value="na">⚪</label>
+                <label><input type="radio" name="C4-AC3" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C4-AC3" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je sais faire des requêtes + afficher côté application (pages, tableaux, stats simples). Pour aller plus loin : dashboards, visualisations plus propres, indicateurs pertinents.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC4">
+            <div class="achead">
+              <div>
+                <div class="acname">Manipuler des données hétérogènes</div>
+                <div class="accode">C4.A2 — AC4</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C4-AC4" value="na">⚪</label>
+                <label><input type="radio" name="C4-AC4" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C4-AC4" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je sais gérer différents formats (texte, fichiers, données issues de pages/app). Je dois progresser sur nettoyage, automatisation et robustesse (formats inattendus, encodage, etc.).</textarea>
+          </div>
+        </div>
+      </details>
+
+      <!-- C5 -->
+      <details class="comp">
+        <summary>
+          <div>
+            <div class="comp-title">Compétence 5 — Conduire un projet</div>
+            <div class="comp-sub">A2 (Parcours A)</div>
+          </div>
+          <div class="comp-sub">cliquer pour ouvrir/fermer</div>
+        </summary>
+
+        <div class="acwrap" data-comp="C5">
+          <div class="ac" data-ac="AC1">
+            <div class="achead">
+              <div>
+                <div class="acname">Identifier les processus présents dans une organisation en vue d’améliorer les systèmes d’information</div>
+                <div class="accode">C5.A2 — AC1</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C5-AC1" value="na">⚪</label>
+                <label><input type="radio" name="C5-AC1" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C5-AC1" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je sais analyser un besoin “métier” et comprendre un fonctionnement global, mais je dois améliorer la formalisation (process, diagrammes, priorisation).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC2">
+            <div class="achead">
+              <div>
+                <div class="acname">Formaliser les besoins du client et de l’utilisateur</div>
+                <div class="accode">C5.A2 — AC2</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C5-AC2" value="na">⚪</label>
+                <label><input type="radio" name="C5-AC2" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C5-AC2" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je sais récupérer des besoins et les traduire en fonctionnalités (ex : EcoGestUM). Je dois encore progresser sur critères d’acceptation, user stories et clarté.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC3">
+            <div class="achead">
+              <div>
+                <div class="acname">Identifier les critères de faisabilité d’un projet informatique</div>
+                <div class="accode">C5.A2 — AC3</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C5-AC3" value="na">⚪</label>
+                <label><input type="radio" name="C5-AC3" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C5-AC3" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je sais estimer “à la louche” (temps/tech), mais je dois être plus précis : risques, dépendances, découpage, MVP et validation rapide.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC4">
+            <div class="achead">
+              <div>
+                <div class="acname">Définir et mettre en œuvre une démarche de suivi de projet</div>
+                <div class="accode">C5.A2 — AC4</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C5-AC4" value="na">⚪</label>
+                <label><input type="radio" name="C5-AC4" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C5-AC4" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">J’utilise des outils simples (todo, étapes, versions) mais je ne suis pas encore super régulier. Je veux progresser : planning, points d’avancement, tickets, meilleure organisation.</textarea>
+          </div>
+        </div>
+      </details>
+
+      <!-- C6 -->
+      <details class="comp">
+        <summary>
+          <div>
+            <div class="comp-title">Compétence 6 — Collaborer au sein d’une équipe informatique</div>
+            <div class="comp-sub">A2 (Parcours A)</div>
+          </div>
+          <div class="comp-sub">cliquer pour ouvrir/fermer</div>
+        </summary>
+
+        <div class="acwrap" data-comp="C6">
+          <div class="ac" data-ac="AC1">
+            <div class="achead">
+              <div>
+                <div class="acname">Comprendre la diversité, la structure et la dimension de l’informatique dans une organisation</div>
+                <div class="accode">C6.A2 — AC1</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C6-AC1" value="na">⚪</label>
+                <label><input type="radio" name="C6-AC1" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C6-AC1" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je comprends les rôles (dev, infra, chef de projet…) et l’idée d’organisation (DSI/ESN), mais je manque encore d’exemples “réels” (stage) pour être totalement à l’aise.</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC2">
+            <div class="achead">
+              <div>
+                <div class="acname">Appliquer une démarche pour intégrer une équipe informatique au sein d’une organisation</div>
+                <div class="accode">C6.A2 — AC2</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C6-AC2" value="na">⚪</label>
+                <label><input type="radio" name="C6-AC2" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C6-AC2" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je sais travailler en groupe en cours/SAE (répartition tâches, objectifs), mais je dois progresser sur méthode et communication (points réguliers, documentation, coordination).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC3">
+            <div class="achead">
+              <div>
+                <div class="acname">Mobiliser les compétences interpersonnelles pour intégrer une équipe informatique</div>
+                <div class="accode">C6.A2 — AC3</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C6-AC3" value="na">⚪</label>
+                <label><input type="radio" name="C6-AC3" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C6-AC3" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je suis capable d’échanger et de m’adapter, mais je peux être plus clair et plus régulier (demander feedback, exprimer blocages, mieux expliquer mes choix).</textarea>
+          </div>
+
+          <div class="ac" data-ac="AC4">
+            <div class="achead">
+              <div>
+                <div class="acname">Rendre compte de son activité professionnelle</div>
+                <div class="accode">C6.A2 — AC4</div>
+              </div>
+              <div class="rating">
+                <label><input type="radio" name="C6-AC4" value="na">⚪</label>
+                <label><input type="radio" name="C6-AC4" value="eca" checked>🔵</label>
+                <label><input type="radio" name="C6-AC4" value="a">🟢</label>
+              </div>
+            </div>
+            <textarea class="justif">Je peux rendre compte (oral/écrit) sur un projet, mais je dois être plus structuré : ce qui a été fait, résultats, preuves, prochaines étapes (plus “pro”).</textarea>
+          </div>
+        </div>
+      </details>
+
+      <div class="tools">
+        <button class="btn" id="exportBtn">Exporter (JSON)</button>
+        <button class="btn danger" id="resetBtn">Tout réinitialiser</button>
+      </div>
+      <div class="small">Sauvegarde locale (dans ton navigateur). Si tu changes de PC/navigateur → ça ne suit pas.</div>
+    </section>
+  </main>
+
+  <!-- Modal Contact -->
+  <div class="modal" id="contactModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+      <div class="modal-top">
+        <div class="modal-title" id="contactTitle">Contact</div>
+        <button class="modal-close" id="closeContact" type="button">Fermer</button>
+      </div>
+      <div class="modal-body">
+        <div class="kv">
+          <div class="k">Nom</div>
+          <div class="v">Lebois Dylan</div>
+        </div>
+        <div class="kv">
+          <div class="k">Email</div>
+          <div class="v"><a href="mailto:dylan.lebois7@gmail.com">dylan.lebois7@gmail.com</a></div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ------------------ localStorage auto-eval ------------------
+    const STORAGE_KEY = "portfolio_a2_selfeval_v1";
+
+    function loadData(){
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+      catch { return {}; }
+    }
+    function saveData(data){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    function keyOf(comp, ac){ return comp + "-" + ac; }
+
+    const data = loadData();
+
+    // hydrate depuis localStorage (si déjà rempli)
+    document.querySelectorAll(".acwrap").forEach(block => {
+      const comp = block.getAttribute("data-comp");
+      block.querySelectorAll(".ac").forEach(acEl => {
+        const ac = acEl.getAttribute("data-ac");
+        const k = keyOf(comp, ac);
+
+        const savedLevel = data[k]?.level;
+        if (savedLevel){
+          const radio = acEl.querySelector(`input[type="radio"][value="${savedLevel}"]`);
+          if (radio) radio.checked = true;
+        }
+
+        const ta = acEl.querySelector("textarea.justif");
+        if (ta && typeof data[k]?.why === "string"){
+          ta.value = data[k].why;
+        }
+      });
+    });
+
+    // listeners
+    document.querySelectorAll(".acwrap .ac").forEach(acEl => {
+      const comp = acEl.closest(".acwrap")?.getAttribute("data-comp");
+      const ac = acEl.getAttribute("data-ac");
+      const k = keyOf(comp, ac);
+
+      acEl.querySelectorAll('input[type="radio"]').forEach(r => {
+        r.addEventListener("change", () => {
+          data[k] = data[k] || {};
+          data[k].level = r.value;
+          saveData(data);
+        });
+      });
+
+      const ta = acEl.querySelector("textarea.justif");
+      if (ta){
+        ta.addEventListener("input", () => {
+          data[k] = data[k] || {};
+          data[k].why = ta.value;
+          saveData(data);
+        });
+      }
+    });
+
+    // export JSON
+    document.getElementById("exportBtn")?.addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(loadData(), null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "auto-eval-A2.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // reset
+    document.getElementById("resetBtn")?.addEventListener("click", () => {
+      if (!confirm("Tout effacer ?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    });
+
+    // ------------------ modal contact ------------------
+    const contactModal = document.getElementById("contactModal");
+    const openContact = document.getElementById("openContact");
+    const closeContact = document.getElementById("closeContact");
+
+    function showContact(){
+      contactModal.classList.add("show");
+      contactModal.setAttribute("aria-hidden", "false");
+    }
+    function hideContact(){
+      contactModal.classList.remove("show");
+      contactModal.setAttribute("aria-hidden", "true");
+    }
+
+    openContact?.addEventListener("click", showContact);
+    closeContact?.addEventListener("click", hideContact);
+
+    // clic dehors = fermer
+    contactModal?.addEventListener("click", (e) => {
+      if (e.target === contactModal) hideContact();
+    });
+
+    // ESC = fermer
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && contactModal.classList.contains("show")) hideContact();
+    });
+  </script>
+</body>
+</html>

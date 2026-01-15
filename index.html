@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio - Dylan</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">Dylan — Portfolio</div>
+  </header>
+
+  <main class="stage">
+    <section class="room" aria-label="Bureau interactif">
+
+      <!-- ZONES CLIQUABLES -->
+      <button class="hotspot hs-pc" data-open="desktop" aria-label="Ouvrir le PC"></button>
+      <button class="hotspot hs-table" data-go="./page/hobi.html" aria-label="Voir mes hobbies"></button>
+      <button class="hotspot hs-board" data-go="./page/info.html" aria-label="Voir auto-évaluation"></button>
+
+      <!-- OVERLAY DESKTOP -->
+      <div class="overlay" id="desktopOverlay" aria-hidden="true">
+        <div class="window" role="dialog" aria-label="Mes Projets">
+          <div class="window-top">
+            <div class="window-title">Mes Projets</div>
+            <button class="window-close" id="closeDesktop" aria-label="Fermer">✕</button>
+          </div>
+
+          <div class="desktop">
+            <a class="icon" href="./page/projet.html#timeline">
+              <div class="emoji">🕒</div><span>Timeline</span>
+            </a>
+            <a class="icon" href="./page/projet.html#morpion">
+              <div class="emoji">❌⭕</div><span>Morpion</span>
+            </a>
+            <a class="icon" href="./page/projet.html#ecogest">
+              <div class="emoji">♻️</div><span>EcoGestUM</span>
+            </a>
+            <a class="icon" href="./page/projet.html#autre">
+              <div class="emoji">⭐</div><span>Autres</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- OVERLAY INFO -->
+      <div class="overlay" id="infoOverlay" aria-hidden="true">
+        <div class="window" role="dialog" aria-label="Infos">
+          <div class="window-top">
+            <div class="window-title">Infos</div>
+            <button class="window-close" id="closeInfo" aria-label="Fermer">✕</button>
+          </div>
+
+          <div class="panel-grid">
+            <button class="tile" data-panel="cv">📄 <span>CV</span><small>Lire / télécharger</small></button>
+            <button class="tile" data-panel="skills">🧠 <span>Compétences</span><small>Formation + outils</small></button>
+            <button class="tile" data-panel="contact">✉️ <span>Contact</span><small>Me joindre rapidement</small></button>
+          </div>
+
+          <div class="panel-content" id="infoContent">
+            <p>Choisis une tuile 👆</p>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
