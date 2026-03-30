@@ -3,93 +3,463 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hobbies</title>
+  <title>Hobbies - Dylan</title>
   <link rel="stylesheet" href="../style.css" />
 
   <style>
-    .pagewrap{
-      width:min(1100px,95vw);
-      padding:24px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(15,20,30,.92);
+    html{
+      scroll-behavior:smooth;
     }
 
-    .chips{ display:flex; flex-wrap:wrap; gap:10px; margin: 10px 0 18px; }
-    .chip{
-      display:inline-block;
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(95, 154, 255, .18), transparent 28%),
+        radial-gradient(circle at top right, rgba(57, 210, 170, .16), transparent 24%),
+        linear-gradient(180deg, #09101a 0%, #0b0f16 42%, #06080d 100%);
+    }
+
+    .stage{
+      padding:40px 24px 56px;
+    }
+
+    .pagewrap{
+      width:min(1120px, 95vw);
+      padding:32px;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(15,20,30,.96), rgba(9,14,24,.94));
+      box-shadow: 0 30px 90px rgba(0,0,0,.45);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .pagewrap::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:180px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), transparent 52%);
+      pointer-events:none;
+    }
+
+    .hero{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .9fr);
+      gap:24px;
+      align-items:stretch;
+      margin-bottom:28px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:#e8eefc;
+      font-size:13px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hero h1{
+      margin:18px 0 12px;
+      font-size:clamp(34px, 5vw, 58px);
+      line-height:.98;
+      letter-spacing:-.03em;
+    }
+
+    .lead{
+      max-width:62ch;
+      margin:0;
+      color:rgba(232,238,252,.84);
+      font-size:17px;
+      line-height:1.65;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin:22px 0 0;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:11px 14px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
       color:#e8eefc;
       text-decoration:none;
       font-size:14px;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
     }
-    .chip:hover{ background: rgba(255,255,255,.10); }
+
+    .chip:hover{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.20);
+      transform: translateY(-1px);
+    }
+
+    .hero-panel{
+      padding:22px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      backdrop-filter: blur(12px);
+      display:grid;
+      gap:18px;
+      align-content:start;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .panel-title{
+      margin:0;
+      font-size:15px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:rgba(232,238,252,.78);
+    }
+
+    .hero-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:10px;
+    }
+
+    .hero-list li{
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+      color:rgba(232,238,252,.88);
+      line-height:1.5;
+    }
+
+    .hero-list strong{
+      display:block;
+      margin-bottom:2px;
+      color:#fff;
+      font-size:15px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .stat{
+      padding:14px 12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:24px;
+      line-height:1;
+      margin-bottom:6px;
+      color:#fff;
+    }
+
+    .stat span{
+      display:block;
+      font-size:13px;
+      color:rgba(232,238,252,.76);
+    }
 
     .section{
-      padding:16px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      margin: 14px 0 22px;
+      --accent: 95, 154, 255;
+      --accent-soft: rgba(95, 154, 255, .18);
+      position:relative;
+      z-index:1;
+      margin:18px 0 0;
+      padding:24px;
+      border-radius:24px;
+      border:1px solid rgba(var(--accent), .22);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      scroll-margin-top:88px;
+    }
+
+    .section::before{
+      content:"";
+      position:absolute;
+      inset:0 auto auto 0;
+      width:180px;
+      height:1px;
+      background: linear-gradient(90deg, rgba(var(--accent), .95), transparent);
+    }
+
+    .section-audio{
+      --accent: 95, 154, 255;
+      --accent-soft: rgba(95, 154, 255, .18);
+    }
+
+    .section-electro{
+      --accent: 57, 210, 170;
+      --accent-soft: rgba(57, 210, 170, .18);
+    }
+
+    .section-ping{
+      --accent: 255, 170, 77;
+      --accent-soft: rgba(255, 170, 77, .18);
     }
 
     .section-top{
-      display:flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      display:grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
+      gap:18px;
+      align-items:start;
     }
 
-    .meta{ opacity:.85; font-size:14px; margin-top: 6px; }
+    .section-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 11px;
+      border-radius:999px;
+      border:1px solid rgba(var(--accent), .28);
+      background: var(--accent-soft);
+      color:#fff;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .section h2{
+      margin:14px 0 8px;
+      font-size:30px;
+      line-height:1.05;
+      letter-spacing:-.02em;
+    }
+
+    .meta{
+      margin:0;
+      color:rgba(232,238,252,.78);
+      line-height:1.65;
+      font-size:15px;
+    }
+
+    .note{
+      padding:16px 18px;
+      border-radius:18px;
+      border:1px solid rgba(var(--accent), .22);
+      background: linear-gradient(180deg, rgba(var(--accent), .12), rgba(255,255,255,.03));
+      color:rgba(232,238,252,.86);
+      line-height:1.6;
+    }
+
+    .note strong{
+      display:block;
+      margin-bottom:8px;
+      color:#fff;
+      font-size:14px;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:18px 0 0;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 11px;
+      border-radius:999px;
+      border:1px solid rgba(var(--accent), .22);
+      background: rgba(var(--accent), .12);
+      color:#f5f8ff;
+      font-size:13px;
+    }
 
     .gallery{
-      margin-top: 14px;
+      margin-top:22px;
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
     }
 
-    /* ✅ Tuiles plus petites et propres */
     .ph{
-      border-radius: 14px;
+      position:relative;
+      min-height:220px;
+      border-radius:20px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      aspect-ratio: 4 / 3;            /* plus compact que 16/10 */
-      display:grid;
-      place-items:center;
-      color: rgba(232,238,252,.75);
-      font-size: 14px;
+      background: rgba(255,255,255,.05);
+      box-shadow: 0 16px 40px rgba(0,0,0,.22);
     }
 
-    /* ✅ Image centrée correctement */
+    .ph-feature{
+      grid-column: span 2;
+      min-height:280px;
+    }
+
     .ph img{
       width:100%;
       height:100%;
-      object-fit: cover;              /* remplit la tuile */
-      object-position: center;        /* centre le sujet */
       display:block;
-      transform: scale(1.02);         /* petit boost pour éviter bord vide */
+      object-fit:cover;
+      object-position:center;
+      transition: transform .35s ease, filter .35s ease;
+      filter:saturate(1.02) contrast(1.02);
     }
 
-    /* ✅ Option : si tu veux voir TOUTE l’image (pas de crop)
-       -> ajoute class="contain" au div .ph */
-    .ph.contain img{
-      object-fit: contain;
-      transform: none;
-      padding: 10px;
-      background: rgba(0,0,0,.15);
+    .ph:hover img{
+      transform: scale(1.04);
+      filter:saturate(1.08) contrast(1.04);
     }
 
-    @media (max-width: 900px){
-      .gallery{ grid-template-columns: repeat(2, 1fr); }
+    .ph-portrait img{
+      object-fit:contain;
+      padding:14px;
+      background:
+        radial-gradient(circle at top, rgba(var(--accent), .18), transparent 55%),
+        linear-gradient(180deg, rgba(10,14,22,.96), rgba(6,9,14,.96));
     }
-    @media (max-width: 560px){
-      .gallery{ grid-template-columns: 1fr; }
+
+    .ph::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0 0;
+      height:45%;
+      background: linear-gradient(180deg, transparent, rgba(4,6,10,.84));
+      pointer-events:none;
+    }
+
+    .ph figcaption{
+      position:absolute;
+      left:16px;
+      right:16px;
+      bottom:14px;
+      z-index:1;
+      color:#fff;
+      font-size:14px;
+      line-height:1.4;
+    }
+
+    .ph figcaption strong{
+      display:block;
+      margin-bottom:3px;
+      font-size:15px;
+    }
+
+    .ph-placeholder{
+      display:grid;
+      align-content:end;
+      padding:18px;
+      background:
+        linear-gradient(160deg, rgba(var(--accent), .14), rgba(255,255,255,.03)),
+        rgba(255,255,255,.03);
+      border-style:dashed;
+    }
+
+    .ph-placeholder::before{
+      content:"+";
+      position:absolute;
+      top:18px;
+      left:18px;
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.08);
+      color:#fff;
+      font-size:22px;
+      z-index:1;
+    }
+
+    .ph-placeholder .placeholder-copy{
+      position:relative;
+      z-index:1;
+      color:#fff;
+    }
+
+    .ph-placeholder strong{
+      display:block;
+      margin-bottom:4px;
+      font-size:16px;
+    }
+
+    .ph-placeholder span{
+      display:block;
+      color:rgba(232,238,252,.72);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    @media (max-width: 960px){
+      .hero,
+      .section-top{
+        grid-template-columns: 1fr;
+      }
+
+      .stats{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px){
+      .pagewrap{
+        padding:24px;
+        border-radius:24px;
+      }
+
+      .gallery{
+        grid-template-columns: 1fr;
+      }
+
+      .ph-feature{
+        grid-column: span 1;
+        min-height:240px;
+      }
+
+      .ph{
+        min-height:220px;
+      }
+
+      .stats{
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px){
+      .stage{
+        padding:24px 16px 40px;
+      }
+
+      .pagewrap{
+        width:min(100%, 95vw);
+        padding:20px;
+      }
+
+      .section{
+        padding:20px;
+      }
+
+      .hero h1{
+        font-size:40px;
+      }
     }
   </style>
 </head>
@@ -103,77 +473,207 @@
 
   <main class="stage">
     <section class="pagewrap">
-      <h1>Hobbies</h1>
-      <p class="meta">Ici, je mets ce qui me passionne (et ce qui me rend dangereux avec un fer à souder).</p>
+      <div class="hero">
+        <div>
+          <span class="eyebrow">Hors cours, mais pas hors passion</span>
+          <h1>Mes hobbies</h1>
+          <p class="lead">
+            Ici, je regroupe ce qui m'occupe en dehors des cours. Le point commun entre ces activités :
+            j'aime comprendre comment les choses fonctionnent, les régler proprement et progresser avec le temps.
+          </p>
 
-      <div class="chips">
-        <a class="chip" href="#audio">🎧 Audio</a>
-        <a class="chip" href="#electronique">🔧 Électronique</a>
-        <a class="chip" href="#pingpong">🏓 Ping-pong</a>
+          <nav class="chips" aria-label="Navigation hobbies">
+            <a class="chip" href="#audio">Audio / DJ / Sono</a>
+            <a class="chip" href="#electronique">Électronique</a>
+            <a class="chip" href="#pingpong">Ping-pong</a>
+          </nav>
+        </div>
+
+        <aside class="hero-panel" aria-label="Résumé des hobbies">
+          <p class="panel-title">Ce que j'aime retrouver dedans</p>
+
+          <ul class="hero-list">
+            <li>
+              <strong>Technique</strong>
+              Régler, tester, comparer et comprendre le matériel plutôt que l'utiliser au hasard.
+            </li>
+            <li>
+              <strong>Pratique</strong>
+              Avoir un résultat concret : un son propre, un montage réussi ou un échange bien construit.
+            </li>
+            <li>
+              <strong>Progression</strong>
+              Revenir dessus, corriger les détails et gagner en précision au fil du temps.
+            </li>
+          </ul>
+
+          <div class="stats" aria-label="Repères">
+            <div class="stat">
+              <strong>3</strong>
+              <span>univers présentés</span>
+            </div>
+            <div class="stat">
+              <strong>4</strong>
+              <span>photos déjà en place</span>
+            </div>
+            <div class="stat">
+              <strong>1</strong>
+              <span>page simple et statique</span>
+            </div>
+          </div>
+        </aside>
       </div>
 
-      <!-- AUDIO -->
-      <article class="section" id="audio">
+      <article class="section section-audio" id="audio">
         <div class="section-top">
-          <h2>🎧 Audio / DJ / Sono</h2>
-          <span class="meta">Création, réglages, matos</span>
+          <div>
+            <span class="section-kicker">01 · Audio</span>
+            <h2>Audio / DJ / Sono</h2>
+            <p class="meta">
+              J'aime tout ce qui touche au son : préparer une installation, régler le matériel et chercher un rendu propre.
+              Ce n'est pas seulement écouter ou lancer de la musique, c'est aussi comprendre la logique derrière le setup.
+            </p>
+
+            <div class="tags" aria-label="Mots-clés audio">
+              <span class="tag">Réglages DSP</span>
+              <span class="tag">Sono mobile</span>
+              <span class="tag">Tests matériel</span>
+              <span class="tag">Mise en place</span>
+            </div>
+          </div>
+
+          <aside class="note">
+            <strong>Ce qui me plaît</strong>
+            Trouver le bon équilibre entre la partie technique et le rendu final. Le matériel, les branchements et les réglages
+            comptent autant que le résultat une fois tout en place.
+          </aside>
         </div>
 
-        <p class="meta">
-          Exemples : sono mobile, réglages DSP, caisson, tests, event… (tu complèteras).
-        </p>
-
         <div class="gallery">
-          <div class="ph">
-            <img src="../asset/image/sono.jpg" alt="sono" />
+          <figure class="ph ph-feature">
+            <img src="../asset/image/sono.jpg" alt="Installation de sono" />
+            <figcaption>
+              <strong>Installation</strong>
+              Préparer le matériel et mettre en place un système propre avant utilisation.
+            </figcaption>
+          </figure>
+
+          <figure class="ph">
+            <img src="../asset/image/mixage.jpg" alt="Matériel de mixage" />
+            <figcaption>
+              <strong>Réglages</strong>
+              Ajuster, tester et comprendre ce qui change réellement dans le rendu.
+            </figcaption>
+          </figure>
+
+          <div class="ph ph-placeholder">
+            <div class="placeholder-copy">
+              <strong>À compléter</strong>
+              <span>Tu peux ajouter ici une photo de set, d'événement ou d'un autre montage audio.</span>
+            </div>
           </div>
-          <div class="ph">
-            <img src="../asset/image/mixage.jpg" alt="mix" />
-          </div>
-          <div class="ph">Ajoute une photo<br><small>asset/image/hobi/audio/</small></div>
         </div>
       </article>
 
-      <!-- ÉLECTRONIQUE -->
-      <article class="section" id="electronique">
+      <article class="section section-electro" id="electronique">
         <div class="section-top">
-          <h2>🔧 Électronique / Soudure</h2>
-          <span class="meta">DIY, réparation, montage</span>
-        </div>
+          <div>
+            <span class="section-kicker">02 · Électronique</span>
+            <h2>Électronique / Soudure</h2>
+            <p class="meta">
+              J'apprécie le côté concret de l'électronique : souder, réparer, câbler et essayer de faire revivre ou améliorer
+              un montage. C'est un hobby où la patience et la précision font une vraie différence.
+            </p>
 
-        <p class="meta">
-          Exemples : soudure, câblage, alimentation, petites réparations, protos… (tu complèteras).
-        </p>
-
-        <div class="gallery">
-          <div class="ph">
-            <img src="../asset/image/elecim.jpg" alt="Électronique" />
+            <div class="tags" aria-label="Mots-clés électronique">
+              <span class="tag">DIY</span>
+              <span class="tag">Soudure</span>
+              <span class="tag">Réparation</span>
+              <span class="tag">Câblage</span>
+            </div>
           </div>
-          <div class="ph">Ajoute une photo<br><small>asset/image/hobi/electronique/</small></div>
-          <div class="ph">Ajoute une photo<br><small>asset/image/hobi/electronique/</small></div>
-        </div>
-      </article>
 
-      <!-- PING-PONG -->
-      <article class="section" id="pingpong">
-        <div class="section-top">
-          <h2>🏓 Ping-pong</h2>
-          <span class="meta">Sport, progression, tournois</span>
+          <aside class="note">
+            <strong>Approche</strong>
+            J'aime le mélange entre réflexion et manuel : identifier le problème, préparer le bon geste puis faire un montage
+            propre sans aller trop vite.
+          </aside>
         </div>
-
-        <p class="meta">
-         Je joue au ping-pong depuis plusieurs années, en club et en loisirs. J'apprécie particulièrement l'aspect stratégique du jeu et la rapidité des échanges.
-        </p>
 
         <div class="gallery">
-         <div class="ph contain">
-  <img src="../asset/image/ttim.jpg" alt="Ping-pong" />
-</div>
-          <div class="ph">Ajoute une photo<br><small>asset/image/hobi/pingpong/</small></div>
-          <div class="ph">Ajoute une photo<br><small>asset/image/hobi/pingpong/</small></div>
+          <figure class="ph ph-feature">
+            <img src="../asset/image/elecim.jpg" alt="Travail d'électronique" />
+            <figcaption>
+              <strong>Montage et détail</strong>
+              L'intérêt est autant dans l'exécution que dans la compréhension de ce qu'on assemble.
+            </figcaption>
+          </figure>
+
+          <div class="ph ph-placeholder">
+            <div class="placeholder-copy">
+              <strong>Ajout possible</strong>
+              <span>Une photo d'atelier, de composant ou d'un projet en cours renforcerait bien cette section.</span>
+            </div>
+          </div>
+
+          <div class="ph ph-placeholder">
+            <div class="placeholder-copy">
+              <strong>Ajout possible</strong>
+              <span>Tu peux aussi montrer une réparation, un câblage ou un prototype terminé.</span>
+            </div>
+          </div>
         </div>
       </article>
 
+      <article class="section section-ping" id="pingpong">
+        <div class="section-top">
+          <div>
+            <span class="section-kicker">03 · Sport</span>
+            <h2>Ping-pong</h2>
+            <p class="meta">
+              Je joue au ping-pong depuis plusieurs années, en club et en loisir. J'aime particulièrement la lecture du jeu,
+              la vitesse des échanges et le fait qu'on progresse beaucoup sur les détails techniques.
+            </p>
+
+            <div class="tags" aria-label="Mots-clés ping-pong">
+              <span class="tag">Club</span>
+              <span class="tag">Loisir</span>
+              <span class="tag">Stratégie</span>
+              <span class="tag">Réactivité</span>
+            </div>
+          </div>
+
+          <aside class="note">
+            <strong>Ce que ça apporte</strong>
+            C'est la partie la plus dynamique de la page : réflexes, régularité, prise d'information rapide et envie de se
+            corriger sur chaque détail de placement ou de timing.
+          </aside>
+        </div>
+
+        <div class="gallery">
+          <figure class="ph ph-feature ph-portrait">
+            <img src="../asset/image/ttim.jpg" alt="Photo de ping-pong" />
+            <figcaption>
+              <strong>Pratique et progression</strong>
+              Un sport où la précision et la vitesse comptent autant que l'engagement.
+            </figcaption>
+          </figure>
+
+          <div class="ph ph-placeholder">
+            <div class="placeholder-copy">
+              <strong>Ajout possible</strong>
+              <span>Une photo d'entraînement, de club ou d'un match rendrait la section plus vivante.</span>
+            </div>
+          </div>
+
+          <div class="ph ph-placeholder">
+            <div class="placeholder-copy">
+              <strong>Ajout possible</strong>
+              <span>Tu peux aussi ajouter une image de matériel ou d'un moment de compétition.</span>
+            </div>
+          </div>
+        </div>
+      </article>
     </section>
   </main>
 </body>
