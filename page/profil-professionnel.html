@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mon profil professionnel - Dylan</title>
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(95,154,255,.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(57,210,170,.14), transparent 26%),
+        linear-gradient(180deg, #09101a 0%, #0b0f16 48%, #06080d 100%);
+    }
+
+    .profile-wrap{
+      width:min(1120px, 95vw);
+      padding:28px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(15,20,30,.94);
+      box-shadow:0 24px 70px rgba(0,0,0,.42);
+    }
+
+    .profile-hero{
+      display:grid;
+      grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
+      gap:22px;
+      align-items:stretch;
+      margin-bottom:22px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      padding:7px 11px;
+      border-radius:999px;
+      border:1px solid rgba(120,200,255,.24);
+      background:rgba(120,200,255,.10);
+      color:#e8eefc;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    h1{
+      margin:16px 0 10px;
+      font-size:clamp(34px, 5vw, 56px);
+      line-height:1;
+    }
+
+    .lead{
+      max-width:70ch;
+      margin:0;
+      color:rgba(232,238,252,.84);
+      font-size:16px;
+      line-height:1.7;
+    }
+
+    .summary-panel,
+    .block,
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.045);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .summary-panel{
+      border-radius:18px;
+      padding:18px;
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+
+    .summary-panel h2,
+    .block h2{
+      margin:0;
+      font-size:22px;
+      line-height:1.15;
+    }
+
+    .summary-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:10px;
+    }
+
+    .summary-list li{
+      padding:11px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,.18);
+      color:rgba(232,238,252,.86);
+      line-height:1.45;
+    }
+
+    .summary-list strong{
+      display:block;
+      margin-bottom:2px;
+      color:#fff;
+      font-size:14px;
+    }
+
+    .quick-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:18px 0 0;
+    }
+
+    .quick-nav a{
+      display:inline-flex;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:#e8eefc;
+      text-decoration:none;
+      font-size:13px;
+    }
+
+    .quick-nav a:hover{
+      background:rgba(255,255,255,.10);
+    }
+
+    .block{
+      margin-top:16px;
+      padding:22px;
+      border-radius:18px;
+      scroll-margin-top:84px;
+    }
+
+    .block-intro{
+      margin:8px 0 0;
+      color:rgba(232,238,252,.80);
+      line-height:1.65;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top:16px;
+    }
+
+    .grid.two{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+
+    .card{
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .card h3{
+      margin:0 0 8px;
+      font-size:17px;
+      line-height:1.2;
+    }
+
+    .card p,
+    .card li{
+      color:rgba(232,238,252,.80);
+      line-height:1.6;
+    }
+
+    .card p{
+      margin:0;
+    }
+
+    .tag-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .tag{
+      display:inline-flex;
+      padding:6px 9px;
+      border-radius:999px;
+      border:1px solid rgba(57,210,170,.22);
+      background:rgba(57,210,170,.10);
+      color:#f4fbff;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .project-list,
+    .source-list{
+      padding-left:18px;
+      margin:12px 0 0;
+    }
+
+    .proof-table{
+      display:grid;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .proof-row{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:14px;
+      padding:13px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(0,0,0,.16);
+      line-height:1.55;
+    }
+
+    .proof-row strong{
+      color:#fff;
+    }
+
+    .proof-row span{
+      color:rgba(232,238,252,.80);
+    }
+
+    .callout{
+      margin-top:16px;
+      padding:16px;
+      border-radius:16px;
+      border:1px solid rgba(255,170,77,.24);
+      background:rgba(255,170,77,.10);
+      color:rgba(232,238,252,.86);
+      line-height:1.65;
+    }
+
+    @media (max-width: 900px){
+      .profile-hero,
+      .grid,
+      .grid.two,
+      .proof-row{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 560px){
+      .stage{
+        padding:18px 12px 34px;
+      }
+
+      .profile-wrap{
+        width:100%;
+        padding:20px;
+      }
+
+      .block{
+        padding:18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a href="../index.html" style="color:inherit;text-decoration:none;">&larr; Retour</a>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section class="profile-wrap">
+      <div class="profile-hero">
+        <div>
+          <span class="eyebrow">Semestre 4 &middot; BUT Informatique</span>
+          <h1>Mon profil professionnel</h1>
+          <p class="lead">
+            Cette page pr&eacute;sente l'&eacute;volution de mon profil &agrave; la fin du semestre 4. Elle met en lien mon auto-&eacute;valuation,
+            les travaux de PPP, le contexte de mon stage et les missions professionnelles que je souhaite viser.
+          </p>
+
+          <nav class="quick-nav" aria-label="Navigation profil professionnel">
+            <a href="#orientation">Orientation</a>
+            <a href="#competences">Comp&eacute;tences</a>
+            <a href="#stage">Stage</a>
+            <a href="#missions">Missions</a>
+            <a href="#preuves">Arguments et preuves</a>
+            <a href="#sources">Sources</a>
+          </nav>
+        </div>
+
+        <aside class="summary-panel" aria-label="Synthese du profil">
+          <h2>Profil en synth&egrave;se</h2>
+          <ul class="summary-list">
+            <li>
+              <strong>Positionnement</strong>
+              D&eacute;veloppement d'outils internes, automatisation et support applicatif.
+            </li>
+            <li>
+              <strong>Contexte</strong>
+              Stage chez MoldTecs, service Bureau d'&eacute;tudes / BE syst&egrave;mes IT.
+            </li>
+            <li>
+              <strong>Approche</strong>
+              Comprendre le besoin m&eacute;tier, fiabiliser l'existant et simplifier le travail utilisateur.
+            </li>
+          </ul>
+        </aside>
+      </div>
+
+      <article class="block" id="orientation">
+        <h2>Mon orientation professionnelle</h2>
+        <p class="block-intro">
+          Je souhaite m'orienter vers des missions o&ugrave; le d&eacute;veloppement sert un besoin concret. Je ne me limite pas
+          au d&eacute;veloppement pur : ce qui m'int&eacute;resse aussi, c'est comprendre un fonctionnement m&eacute;tier, reprendre un outil
+          existant, corriger ses limites et rendre son utilisation plus fiable.
+        </p>
+        <div class="grid two">
+          <section class="card">
+            <h3>Ce que je recherche</h3>
+            <p>
+              Des projets applicatifs proches des utilisateurs, avec de l'analyse, du diagnostic, des am&eacute;liorations
+              progressives et une vraie utilit&eacute; dans l'organisation.
+            </p>
+          </section>
+          <section class="card">
+            <h3>Ce que je veux d&eacute;velopper</h3>
+            <p>
+              Une meilleure capacit&eacute; &agrave; formaliser les besoins, mesurer les probl&egrave;mes, documenter les corrections
+              et livrer des outils simples &agrave; maintenir.
+            </p>
+          </section>
+        </div>
+      </article>
+
+      <article class="block" id="competences">
+        <h2>Mes comp&eacute;tences principales</h2>
+        <p class="block-intro">
+          Les comp&eacute;tences ci-dessous ressortent de mon parcours en BUT Informatique et de mon stage de semestre 4.
+        </p>
+        <div class="grid">
+          <section class="card">
+            <h3>D&eacute;velopper des outils internes</h3>
+            <p>Concevoir ou am&eacute;liorer des applications adapt&eacute;es &agrave; un besoin m&eacute;tier r&eacute;el.</p>
+          </section>
+          <section class="card">
+            <h3>Automatiser des t&acirc;ches</h3>
+            <p>Limiter les actions r&eacute;p&eacute;titives avec des scripts, des configurations centralis&eacute;es et des traitements plus directs.</p>
+          </section>
+          <section class="card">
+            <h3>Optimiser les performances</h3>
+            <p>Analyser les lenteurs, tester des solutions et am&eacute;liorer les chargements ou les traitements.</p>
+          </section>
+          <section class="card">
+            <h3>Maintenir l'existant</h3>
+            <p>Reprendre des scripts ou applications d&eacute;j&agrave; en place, les fiabiliser et mieux documenter leur fonctionnement.</p>
+          </section>
+          <section class="card">
+            <h3>Travailler avec des technologies vari&eacute;es</h3>
+            <p>WinDev, Batch, VBScript, HTA, AutoIt, PowerShell, SQL/HFSQL et fichiers INI.</p>
+          </section>
+          <section class="card">
+            <h3>Prendre en compte l'utilisateur</h3>
+            <p>Am&eacute;liorer les messages d'erreur, les retours d'&eacute;tat, les interfaces et la limitation des actions risqu&eacute;es.</p>
+          </section>
+        </div>
+      </article>
+
+      <article class="block" id="stage">
+        <h2>Ce que mon stage m'a apport&eacute;</h2>
+        <p class="block-intro">
+          Mon stage chez MoldTecs m'a plac&eacute; dans un environnement industriel, au service Bureau d'&eacute;tudes / BE syst&egrave;mes IT.
+          Mes missions portent sur l'am&eacute;lioration, la fiabilisation et l'automatisation d'outils informatiques internes.
+        </p>
+
+        <div class="grid two">
+          <section class="card">
+            <h3>CAD Converter</h3>
+            <p>
+              Travail sur un outil interne de conversion CAO avec scripts Batch, VBScript, HTA, AutoIt, PowerShell,
+              fichiers INI et ANSYS/SpaceClaim Converter.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Automatisation</span>
+              <span class="tag">Configuration</span>
+              <span class="tag">Scripts Windows</span>
+            </div>
+          </section>
+          <section class="card">
+            <h3>BDEmissionCAO</h3>
+            <p>
+              Am&eacute;lioration d'une application WinDev interne : optimisation des chargements de tableaux,
+              s&eacute;curisation des actions pendant les traitements et r&eacute;flexion sur l'envoi de mails.
+            </p>
+            <div class="tag-row">
+              <span class="tag">WinDev</span>
+              <span class="tag">Performance</span>
+              <span class="tag">UX</span>
+            </div>
+          </section>
+          <section class="card">
+            <h3>CAXLOGON</h3>
+            <p>
+              Refonte de scripts de connexion CAx avec centralisation de la configuration, d&eacute;tection automatique
+              des sites, gestion des lecteurs r&eacute;seau et des logs.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Fiabilisation</span>
+              <span class="tag">Logs</span>
+              <span class="tag">R&eacute;seau</span>
+            </div>
+          </section>
+          <section class="card">
+            <h3>Envoi de mails</h3>
+            <p>
+              Conservation d'Outlook local quand il est disponible et &eacute;tude d'une solution SMTP avec fen&ecirc;tre
+              de pr&eacute;visualisation, sans exposer de donn&eacute;es confidentielles.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Applicatif</span>
+              <span class="tag">Messagerie</span>
+              <span class="tag">Contrainte utilisateur</span>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="block" id="missions">
+        <h2>Les missions que je souhaite exercer</h2>
+        <p class="block-intro">
+          En fin de semestre 4, je me positionne sur des missions entre d&eacute;veloppement applicatif, automatisation et
+          support aux services m&eacute;tiers.
+        </p>
+        <div class="grid">
+          <section class="card">
+            <h3>D&eacute;veloppeur d'outils internes</h3>
+            <p>Cr&eacute;er ou adapter des outils pour r&eacute;pondre &agrave; des besoins pr&eacute;cis dans une entreprise.</p>
+          </section>
+          <section class="card">
+            <h3>D&eacute;veloppeur applicatif junior</h3>
+            <p>Participer &agrave; l'&eacute;volution d'applications, &agrave; la correction de bugs et &agrave; l'ajout de fonctionnalit&eacute;s.</p>
+          </section>
+          <section class="card">
+            <h3>Technicien d&eacute;veloppeur / support applicatif</h3>
+            <p>Faire le lien entre les utilisateurs, les outils existants et les corrections techniques.</p>
+          </section>
+          <section class="card">
+            <h3>Automatisation de processus m&eacute;tiers</h3>
+            <p>Transformer des actions manuelles en traitements plus rapides, plus fiables et mieux suivis.</p>
+          </section>
+          <section class="card">
+            <h3>Maintenance applicative</h3>
+            <p>Am&eacute;liorer des applications existantes, documenter les changements et pr&eacute;venir les erreurs r&eacute;currentes.</p>
+          </section>
+          <section class="card">
+            <h3>Optimisation d'applications internes</h3>
+            <p>Identifier les lenteurs, mesurer leur impact et proposer des am&eacute;liorations concr&egrave;tes.</p>
+          </section>
+        </div>
+      </article>
+
+      <article class="block" id="preuves">
+        <h2>Arguments et preuves</h2>
+        <p class="block-intro">
+          Cette partie sert de base &agrave; une infographie argument&eacute;e : chaque comp&eacute;tence peut &ecirc;tre reli&eacute;e &agrave; un exemple concret.
+        </p>
+
+        <div class="proof-table" aria-label="Arguments et preuves">
+          <div class="proof-row">
+            <strong>Automatisation</strong>
+            <span>CAD Converter et CAXLOGON : scripts, configuration centralis&eacute;e et r&eacute;duction des actions manuelles.</span>
+          </div>
+          <div class="proof-row">
+            <strong>Optimisation</strong>
+            <span>BDEmissionCAO : am&eacute;lioration des chargements de tableaux et meilleure gestion des actions utilisateur.</span>
+          </div>
+          <div class="proof-row">
+            <strong>Maintenance</strong>
+            <span>Reprise de scripts existants, correction de comportements fragiles et meilleure lisibilit&eacute; des traitements.</span>
+          </div>
+          <div class="proof-row">
+            <strong>Documentation</strong>
+            <span>Rapport, sch&eacute;mas, proc&eacute;dures et traces de tests pour expliquer les choix et faciliter la reprise.</span>
+          </div>
+          <div class="proof-row">
+            <strong>Analyse m&eacute;tier</strong>
+            <span>Adaptation aux besoins du Bureau d'&eacute;tudes, aux contraintes de l'entreprise et aux usages r&eacute;els.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="block" id="sources">
+        <h2>Sources possibles pour l'infographie</h2>
+        <p class="block-intro">
+          Les sources ci-dessous sont des emplacements &agrave; compl&eacute;ter ou citer pour construire une infographie sourc&eacute;e,
+          sans divulguer d'informations confidentielles de l'entreprise.
+        </p>
+        <ul class="source-list">
+          <li>Programme national du BUT Informatique.</li>
+          <li>Fiches ROME ou Onisep sur les m&eacute;tiers de d&eacute;veloppeur applicatif et de support applicatif.</li>
+          <li>Documents de stage, rapport, sch&eacute;mas ou proc&eacute;dures internes, uniquement si les donn&eacute;es ne sont pas confidentielles.</li>
+          <li>Documentation des technologies utilis&eacute;es : WinDev, PowerShell, SQL, scripts Windows, fichiers INI.</li>
+        </ul>
+        <div class="callout">
+          Pour l'infographie, l'id&eacute;e principale peut &ecirc;tre : un profil orient&eacute; outils internes, automatisation,
+          fiabilisation et lien entre informatique et besoin m&eacute;tier.
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
