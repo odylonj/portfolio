@@ -107,12 +107,4 @@ document.addEventListener("keydown", (e) => {
     overlayInfo.setAttribute("aria-hidden", "true");
   }
 });
-// Option Windows: double-clic pour ouvrir les icônes
-document.querySelectorAll("#desktopOverlay .icon").forEach(a => {
-  a.addEventListener("click", (e) => {
-    e.preventDefault(); // empêche ouverture au simple clic
-  });
-  a.addEventListener("dblclick", () => {
-    window.location.href = a.getAttribute("href");
-  });
-});
+// Les icônes du bureau sont des liens classiques : un clic suffit pour ouvrir.
